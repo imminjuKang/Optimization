@@ -79,9 +79,9 @@ Process *spn(Queue *q)
     return shortest;
 }
 
-int read_file(const char *file, Process **process_ptr, int *num_process_ptr)
+int read_file(const char *file, Process (*process)[MAX_LENGTH], int *num_process_ptr)
 {
-    FILE *fp = fopen("input.txt", "r");
+    FILE *fp = fopen(file, "r");
     if (fp == NULL)
     {
         printf("Error: Cannot open file");
@@ -102,12 +102,12 @@ int read_file(const char *file, Process **process_ptr, int *num_process_ptr)
     }
 
     for (int i = 0; i < num_process; i++) {
-        if (fscanf(fp, "%d, %d, %d\n", &(*process_ptr)[i].pid, &(*process_ptr)[i].arrival_time, &(*process_ptr)[i].burst_time) != 3) {
+        if (fscanf(fp, "%d, %d, %d\n", &(*process)[i].pid, &(*process)[i].arrival_time, &(*process)[i].burst_time) != 3) {
             fprintf(stderr, "Error: Invalid process data on line %d\n", i + 2);
             fclose(fp);
             return 0;
         }
-        (*process_ptr)[i].remain_time = (*process_ptr)[i].burst_time;
+        (*process)[i].remain_time = (*process)[i].burst_time;
     }
 
     fclose(fp);
@@ -259,7 +259,7 @@ int main()
 {
 
     int num_process = 0;
-    Process *process = NULL;
+    Process process[MAX_LENGTH];
 
     if (!read_file("input.txt", &process, &num_process)) 
     {
@@ -297,7 +297,5 @@ int main()
 
     gantt_char(gantt_chart, clock_time);
     print_chart(process, num_process);
-
-    return 0;
 
 }
