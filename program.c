@@ -261,7 +261,7 @@ int main()
     int num_process = 0;
     Process *process = NULL;
 
-    if (!read_processes("input.txt", &process, &num_process)) 
+    if (!read_file("input.txt", &process, &num_process)) 
     {
     return 1; 
     }
