@@ -298,4 +298,6 @@ int main()
     gantt_char(gantt_chart, clock_time);
     print_chart(process, num_process);
 
+    return 0;
+
 }
