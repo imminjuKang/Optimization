@@ -115,10 +115,14 @@ int read_file(const char *file, Process (*process)[MAX_LENGTH], int *num_process
 
 }
 
-void enqueue_arrival(Process *process, int num, int time, Queue *q0, int *arrival_index) {
-    while (*arrival_index < num && process[*arrival_index].arrival_time == time) {
-        enqueue(q0, &process[*arrival_index]);
-        (*arrival_index)++;
+void enqueue_arrival(Process *process, int num, int time, Queue *q0)
+{
+    for (int i = 0; i < num; i++)
+    {
+        if (process[i].arrival_time == time)
+        {
+            enqueue(q0, &process[i]);
+        }
     }
 }
 
