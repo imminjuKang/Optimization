@@ -115,14 +115,10 @@ int read_file(const char *file, Process (*process)[MAX_LENGTH], int *num_process
 
 }
 
-void enqueue_arrival(Process *process, int num, int time, Queue *q0)
-{
-    for (int i = 0; i < num; i++)
-    {
-        if (process[i].arrival_time == time)
-        {
-            enqueue(q0, &process[i]);
-        }
+void enqueue_arrival(Process *process, int num, int time, Queue *q0, int *arrival_index) {
+    while (*arrival_index < num && process[*arrival_index].arrival_time == time) {
+        enqueue(q0, &process[*arrival_index]);
+        (*arrival_index)++;
     }
 }
 
@@ -258,13 +254,14 @@ int main()
 
     int gantt_chart[MAX_LENGTH] = {0};
     int clock_time = 0;
+    int arrival_index = 0;
 
     Process *running_p = NULL;
     int time_quantum = 0;
 
     while (1)
     {
-        enqueue_arrival(process, num_process, clock_time, &q0);
+        enqueue_arrival(process, num_process, clock_time, &q0, &arrival_index);
 
         if (running_p != NULL)
         {
