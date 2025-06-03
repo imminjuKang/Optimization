@@ -258,14 +258,13 @@ int main()
 
     int gantt_chart[MAX_LENGTH] = {0};
     int clock_time = 0;
-    int arrival_index = 0;
 
     Process *running_p = NULL;
     int time_quantum = 0;
 
     while (1)
     {
-        enqueue_arrival(process, num_process, clock_time, &q0, &arrival_index);
+        enqueue_arrival(process, num_process, clock_time, &q0);
 
         if (running_p != NULL)
         {
