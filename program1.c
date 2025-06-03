@@ -153,25 +153,6 @@ Process* scheduling(Queue *q0, Queue *q1, Queue *q2)
     return NULL;
 }
 
-void update(Process *process, int *time_quantum, int time, int *chart)
-{
-    chart[time] = process->pid;
-    process->remain_time--;
-    (*time_quantum)++;
-}
-
-int finish(Process **process, int *time_quantum, int time)
-{
-    if ((*process)->remain_time == 0)
-    {
-        (*process)->finish_time = time + 1;
-        *process = NULL;
-        *time_quantum = 0;
-        return 1;
-    }
-    return 0;
-}
-
 int expiration(Process **process, int *time_quantum, Queue *q1, Queue *q2)
 {
     if ((*process)->current_q == 0 && *time_quantum == TIME_QUANTUM0)
@@ -193,8 +174,18 @@ int expiration(Process **process, int *time_quantum, Queue *q1, Queue *q2)
 
 void execution(Process **process, int *time_quantum, int time, int *chart, Queue *q1, Queue *q2)
 {
-    update(*process, time_quantum, time, chart);
-    if (finish(process, time_quantum, time)) return;
+    chart[time] = (*process)->pid;
+    (*process)->remain_time--;
+    (*time_quantum)++;
+
+    if ((*process)->remain_time == 0)
+    {
+        (*process)->finish_time = time + 1;
+        *process = NULL;
+        *time_quantum = 0;
+        return ;
+    }
+
     if (expiration(process, time_quantum, q1, q2)) return;
 }
 
